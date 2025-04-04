@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public bool isGrounded = false;
     public float speed;
     public float jumpForce;
+
+    public int playerIndex = 0;
     private Rigidbody2D rb2d;
 
     // Start is called before the first frame update
@@ -20,7 +22,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontalValue = Input.GetAxis("Horizontal");
+        float horizontalValue = 0f;
+        if (playerIndex == 0)
+        {
+         horizontalValue = Input.GetAxis("Horizontal");
+            
+        }else
+        {
+            horizontalValue = Input.GetAxis("HorizontalP2");
+        }
+
         if (horizontalValue < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
@@ -31,12 +42,26 @@ public class Player : MonoBehaviour
         }
         rb2d.velocity = new Vector2(horizontalValue * speed, rb2d.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded || Input.GetKeyDown(KeyCode.Space) && jumpCount <= 2)
+        if (playerIndex == 0)
         {
-            rb2d.AddForce(new Vector2(rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
-            jumpCount++;
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && jumpCount <= 2)
+            {
+                rb2d.AddForce(new Vector2(rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
+                jumpCount++;
+
+            }
 
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded && jumpCount <= 2)
+            {
+                rb2d.AddForce(new Vector2(rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
+                jumpCount++;
+
+            }
+        }
+        
 
     }
     //Verifica quando está em colisão com algum objeto de certa TAG ou tipo, etc.
@@ -46,10 +71,9 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            if (jumpCount >= 2)
-            {
-                jumpCount = 0;
-            }
+            jumpCount = 0;
+            
+            
         }
 
     }
