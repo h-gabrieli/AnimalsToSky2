@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().flipX = true;
         }
-        else
+        else if(horizontalValue > 0)
         {
             GetComponent<SpriteRenderer>().flipX = false;
         }
@@ -64,10 +64,10 @@ public class Player : MonoBehaviour
         
 
     }
-    //Verifica quando está em colisão com algum objeto de certa TAG ou tipo, etc.
+    //Verifica quando estï¿½ em colisï¿½o com algum objeto de certa TAG ou tipo, etc.
     void OnCollisionStay2D(Collision2D other)
     {
-        //Valida o que está encostando -> quando está no chão
+        //Valida o que estï¿½ encostando -> quando estï¿½ no chï¿½o
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
@@ -77,10 +77,10 @@ public class Player : MonoBehaviour
         }
 
     }
-    //Verifica quando sai de certa colisão.
+    //Verifica quando sai de certa colisï¿½o.
     void OnCollisionExit2D(Collision2D collision)
     {
-        //Valida o que está encostando -> quando sai do chão.
+        //Valida o que estï¿½ encostando -> quando sai do chï¿½o.
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
