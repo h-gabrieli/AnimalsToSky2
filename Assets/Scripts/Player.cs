@@ -4,83 +4,73 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int jumpCount = 0;
+    //Publico é possivel consigo ver no inspector e puxar em qualquer outro script
+    //Private existe apenas neste script -> [SerializeField] private
 
-    public bool isGrounded = false;
-    public float speed;
-    public float jumpForce;
+    public bool isGrounded; // Responde se é verdadeiro ou falso -> verifica se está no chão ou não
 
-    public int playerIndex = 0;
-    private Rigidbody2D rb2d;
+    public float speed; // Entrega números quebrados(com virgulas) -> Velocidade dos personagens
 
-    // Start is called before the first frame update
-    void Start()
+    public float jumpForce; // Entrega números quebrados(com virgulas) - > Força dos pulos
+
+    public int playerIndex; // Entrega numeros inteiros -> Filtra o jogador
+
+    private float _horizontalValue; // Movimentação dos players 
+
+    private Rigidbody2D _rb2d; // Aplicar força sobre o player
+
+    void Awake() // Antes do start -> Atribuir valores que não mudam durante o jogo
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        _rb2d = GetComponent<Rigidbody2D>(); // Informando qual Rigidbody 
     }
 
-    // Update is called once per frame
-    void Update()
+    void Update()// Atualiza uma vez por frame
     {
-        float horizontalValue = 0f;
-        if (playerIndex == 0)
+        
+        if (playerIndex == 0) // Se o for player 1 -> Movimenta-se com as A ou D. Se não player 1 -> Movimenta-se com as setas
         {
-         horizontalValue = Input.GetAxis("Horizontal");
-            
+            _horizontalValue = Input.GetAxis("Horizontal");
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                _rb2d.AddForce(new Vector2(_rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
+
+            } 
         }else
         {
-            horizontalValue = Input.GetAxis("HorizontalP2");
+            _horizontalValue = Input.GetAxis("HorizontalP2");
+             if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+            {
+                _rb2d.AddForce(new Vector2(_rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
+
+            }
         }
 
-        if (horizontalValue < 0)
+        if (_horizontalValue < 0) // 
         {
             GetComponent<SpriteRenderer>().flipX = true;
         }
-        else if(horizontalValue > 0)
+        else if(_horizontalValue > 0)
         {
             GetComponent<SpriteRenderer>().flipX = false;
         }
-        rb2d.velocity = new Vector2(horizontalValue * speed, rb2d.velocity.y);
-
-        if (playerIndex == 0)
-        {
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && jumpCount <= 2)
-            {
-                rb2d.AddForce(new Vector2(rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
-                jumpCount++;
-
-            }
-
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded && jumpCount <= 2)
-            {
-                rb2d.AddForce(new Vector2(rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
-                jumpCount++;
-
-            }
-        }
-        
+        _rb2d.velocity = new Vector2(_horizontalValue * speed, _rb2d.velocity.y);
 
     }
-    //Verifica quando est� em colis�o com algum objeto de certa TAG ou tipo, etc.
+    //Verifica quando estao em colisao com algum objeto de certa TAG ou tipo, etc.
     void OnCollisionStay2D(Collision2D other)
     {
-        //Valida o que est� encostando -> quando est� no ch�o
+        //Valida o que estao encostando -> quando estao no chao
         if (other.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true;
-            jumpCount = 0;
-            
+            isGrounded = true;  
             
         }
 
     }
-    //Verifica quando sai de certa colis�o.
+    //Verifica quando sai de certa colisao.
     void OnCollisionExit2D(Collision2D collision)
     {
-        //Valida o que est� encostando -> quando sai do ch�o.
+        //Valida o que estao encostando -> quando sai do chao.
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
