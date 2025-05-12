@@ -6,10 +6,14 @@ public class Lock : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D collision) //Quando outro objeto entra no trigger da barreira
     {
-        
-        if (collision.gameObject.CompareTag("Player"))// Verifica se o objeto que entrou na colisão tem a tag "Player"
-        {
-            Destroy(collision.gameObject); // Destroi o objeto do player (faz ele desaparecer da cena)
+        if (collision.CompareTag("Player"))// Verifica se quem colidiu tem a tag "Player"
+        { 
+            PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();// Pega o script PlayerHealth que está no jogador
+            if (playerHealth != null)// Verifica se o jogador tem o script
+            {
+                playerHealth.TakeDamage(); // Aplica dano ao jogador
+            }
         }
+
     }
 }
