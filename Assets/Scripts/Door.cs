@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 { 
-     void OnTriggerEnter2D(Collider2D other) //Quando outro objeto entra no trigger da porta
+     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) // Verifica se o objeto que entrou no trigger tem a tag "Player"
+        if (other.CompareTag("Player"))
         {
-            int playerIndex = other.GetComponent<Player>().playerIndex; //Pega o índice do jogador (0 ou 1), através do script Player anexado no jogador
+            Player playerScript = other.GetComponent<Player>();
+            int playerIndex = playerScript.playerIndex;
 
-            if (GameManager.points[playerIndex] == 10) // Verifica se o jogador coletou todas as chaves
+            if (GameManager.points[playerIndex] >= 10)
             {
-                Destroy(other.gameObject); // Se coletou todas as chaves, destrói o player (o jogador "entra na porta")
+                Destroy(other.gameObject); // Remove o jogador (entrou na porta)
+                GameManager.Instance.ShowVictoryScreen(playerIndex); // Mostra tela de vitória
             }
-            
         }
     }
 }

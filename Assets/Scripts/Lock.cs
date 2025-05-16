@@ -12,6 +12,7 @@ public class Lock : MonoBehaviour
             if (playerHealth != null)// Verifica se o jogador tem o script
             {
                 playerHealth.TakeDamage(); // Aplica dano ao jogador
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.damageSound);
             }
         }
 

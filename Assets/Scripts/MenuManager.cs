@@ -11,6 +11,10 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Jogo");// Carrega a cena chamada "Jogo", iniciando o gameplay
     }
 
+    public void AbrirOpcoes()
+    {
+        // Ative o painel de opções
+    }
     public void Exit()// Método chamado quando o jogador clica no botão "Exit"
     {
         Debug.Log("Saiu do jogo");// Mostra uma mensagem no console da Unity (útil durante o desenvolvimento)

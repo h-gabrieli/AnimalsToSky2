@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         if (playerIndex == 0) // Se o for player 1 -> Movimenta-se com as A ou D. Se não player 1 -> Movimenta-se com as setas
         {
             _horizontalValue = Input.GetAxis("Horizontal");
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && isGrounded)
             {
                 _rb2d.AddForce(new Vector2(_rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
 
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         }else
         {
             _horizontalValue = Input.GetAxis("HorizontalP2");
-             if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+             if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick2Button1)) && isGrounded)
             {
                 _rb2d.AddForce(new Vector2(_rb2d.velocity.x, jumpForce), ForceMode2D.Impulse);
 
